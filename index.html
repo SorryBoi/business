@@ -416,7 +416,7 @@
                 <li><a href="#products">Products</a></li>
                 <li><a href="#directions">Directions</a></li>
                 <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="https://whatsform.com/Y954ui">Contact</a></li>
+                <li><a href="#contact">Contact</a></li>
             </ul>
         </div>
     </nav>
@@ -426,7 +426,7 @@
         <div class="hero-content">
             <h1>Welcome to Trupti Prints </h1>
             <p>Transforming your ideas into stunning prints with precision and passion.</p>
-            <a href="https://whatsform.com/Y954ui" class="cta-btn">Contact Us</a>
+            <a href="#contact" class="cta-btn">Contact Us</a>
         </div>
         <svg class="wave" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
             <path d="M0 36L60 42C120 48 240 60 360 66C480 72 600 72 720 60C840 48 960 24 1080 18C1200 12 1320 24 1380 30L1440 36V120H0V36Z" fill="#fff"/>
@@ -525,10 +525,10 @@
     <section id="contact" class="contact">
         <h2>Contact Us</h2>
         <form class="contact-form" onsubmit="alert('Thank you for your message! We’ll get back to you soon.'); return false;">
-            <input type="text" placeholder="Your Name" required>
-            <input type="email" placeholder="Your Email" required>
-            <textarea placeholder="Your Message" rows="5" required></textarea>
-            <button type="submit">Send Message</button>
+            <input type="text" id="name" name="name" placeholder="Your Name" required>
+            <input type="email" id="email" name="email" placeholder="Your Email" required>
+            <textarea placeholder="Your Message" rows="5" id="text-input" name="message" required></textarea>
+            <button type="submit" onClick="sendWA()">Send Message</button>
         </form>
     </section>
 
@@ -574,6 +574,24 @@
                 navMenu.classList.remove('active');
             }
         });
+
+function sendWA() {
+	let name = document.getElementById('name');
+	let email = document.getElementById('email');
+	let textInput = document.getElementById('text-input');
+  let mobileNumber = 9322754577;    //Enter your mobile number here
+
+	if (name.value.trim() == "") {
+		name.style.background = "lightpink";
+		name.style.border = "4px solid red";
+		alert('Please Enter your Name');
+		return false;
+	}
+
+	let url = `https://wa.me/${mobileNumber}?text=` + "Name: " + name.value + "%0a" + "Email ID: " + email.value + "%0a" + "Message: " + textInput.value;
+
+	window.open(url, '_blank').focus();
+}
     </script>
 </body>
 </html>
