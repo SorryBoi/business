@@ -376,13 +376,26 @@
             opacity: 0;
         }
 
-        .contact-form input, .contact-form textarea {
+        .contact-form input, .contact-form textarea, .contact-form select {
             width: 100%;
             padding: 1rem;
             margin: 0.5rem 0;
             border: 1px solid #ddd;
             border-radius: 5px;
             font-size: 1rem;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        .contact-form select {
+            appearance: none;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="10" height="5" viewBox="0 0 10 5"><path fill="%23333" d="M0 0l5 5 5-5H0z"/></svg>') no-repeat right 1rem center;
+            background-size: 10px;
+            cursor: pointer;
+        }
+
+        .contact-form select:focus {
+            border-color: #3498db;
+            outline: none;
         }
 
         .contact-form button {
@@ -477,13 +490,13 @@
             .explore-btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
             .custom-text { font-size: 0.9rem; }
 
-            /* Directions */
-            .map-container iframe { height: 250px; }
-
             /* Contact */
             .contact-form { padding: 1.5rem; }
-            .contact-form input, .contact-form textarea { padding: 0.8rem; font-size: 0.9rem; }
+            .contact-form input, .contact-form textarea, .contact-form select { padding: 0.8rem; font-size: 0.9rem; }
             .contact-form button { padding: 0.8rem 1.5rem; font-size: 1rem; }
+
+            /* Directions */
+            .map-container iframe { height: 250px; }
 
             /* Footer */
             footer { padding: 1.5rem; font-size: 0.9rem; }
@@ -697,6 +710,25 @@
         <form class="contact-form" onsubmit="alert('Thank you for your message! We’ll get back to you soon.'); return false;">
             <input type="text" id="name" name="name" placeholder="Your Name" required>
             <input type="email" id="email" name="email" placeholder="Your Email" required>
+            <select id="product" name="product" required>
+                <option value="" disabled selected>Select a Product</option>
+                <option value="Premium Business Cards">Premium Business Cards</option>
+                <option value="Vinyl Banners">Vinyl Banners</option>
+                <option value="Tri-Fold Brochures">Tri-Fold Brochures</option>
+                <option value="Custom Stickers">Custom Stickers</option>
+                <option value="Flyers">Flyers</option>
+                <option value="Wedding Cards">Wedding Cards</option>
+                <option value="Bill Books">Bill Books</option>
+                <option value="Posters">Posters</option>
+                <option value="Doctor Files">Doctor Files</option>
+                <option value="Standee">Standee</option>
+                <option value="Hoarding">Hoarding</option>
+                <option value="Sun Boards">Sun Boards</option>
+                <option value="Packaging Material/Boxes">Packaging Material/Boxes</option>
+                <option value="ID Cards">ID Cards</option>
+                <option value="Designing Services">Designing Services</option>
+                <option value="Other">Other (Please specify in message)</option>
+            </select>
             <textarea placeholder="Your Message" rows="5" id="text-input" name="message" required></textarea>
             <button type="submit" onClick="sendWA()">Send Message</button>
         </form>
@@ -756,6 +788,7 @@
         function sendWA() {
             let name = document.getElementById('name');
             let email = document.getElementById('email');
+            let product = document.getElementById('product');
             let textInput = document.getElementById('text-input');
             let mobileNumber = 9322754577;    //Enter your mobile number here
 
@@ -766,7 +799,11 @@
                 return false;
             }
 
-            let url = `https://wa.me/${mobileNumber}?text=` + "Name: " + name.value + "%0a" + "Email ID: " + email.value + "%0a" + "Message: " + textInput.value;
+            let url = `https://wa.me/${mobileNumber}?text=` + 
+                "Name: " + name.value + "%0a" + 
+                "Email ID: " + email.value + "%0a" + 
+                "Product Enquiry: " + product.value + "%0a" + 
+                "Message: " + textInput.value;
 
             window.open(url, '_blank').focus();
         }
