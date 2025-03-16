@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -225,6 +224,10 @@
             background: #fff;
         }
 
+        .products-grid {
+            margin-bottom: 2rem;
+        }
+
         .product-card img {
             width: 100%;
             height: 150px;
@@ -243,6 +246,76 @@
         .product-card:nth-child(2) { animation-delay: 0.4s; }
         .product-card:nth-child(3) { animation-delay: 0.6s; }
         .product-card:nth-child(4) { animation-delay: 0.8s; }
+
+        .explore-btn {
+            display: block;
+            margin: 0 auto;
+            padding: 1rem 2rem;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.2rem;
+            cursor: pointer;
+            transition: background 0.3s ease, transform 0.3s ease;
+        }
+
+        .explore-btn:hover {
+            background: #2980b9;
+            transform: scale(1.05);
+        }
+
+        .more-products {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s ease-out;
+        }
+
+        .more-products.active {
+            max-height: 3000px; /* Increased to ensure all content is visible */
+        }
+
+        .more-products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 2rem auto 0;
+        }
+
+        .more-products-grid .product-card:nth-child(1) { animation-delay: 0.2s; }
+        .more-products-grid .product-card:nth-child(2) { animation-delay: 0.3s; }
+        .more-products-grid .product-card:nth-child(3) { animation-delay: 0.4s; }
+        .more-products-grid .product-card:nth-child(4) { animation-delay: 0.5s; }
+        .more-products-grid .product-card:nth-child(5) { animation-delay: 0.6s; }
+        .more-products-grid .product-card:nth-child(6) { animation-delay: 0.7s; }
+        .more-products-grid .product-card:nth-child(7) { animation-delay: 0.8s; }
+        .more-products-grid .product-card:nth-child(8) { animation-delay: 0.9s; }
+        .more-products-grid .product-card:nth-child(9) { animation-delay: 1.0s; }
+        .more-products-grid .product-card:nth-child(10) { animation-delay: 1.1s; }
+        .more-products-grid .product-card:nth-child(11) { animation-delay: 1.2s; }
+
+        .custom-text {
+            text-align: center;
+            font-size: 1rem;
+            color: #666;
+            margin: 2rem auto;
+            max-width: 1200px;
+            padding: 0 1rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease-out forwards;
+            animation-delay: 1.3s; /* Delayed to appear after last product card */
+        }
+
+        .custom-text a {
+            color: #3498db;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .custom-text a:hover {
+            color: #2980b9;
+        }
 
         /* Testimonials Section */
         .testimonials {
@@ -390,7 +463,7 @@
             .intro p { font-size: 1rem; }
 
             /* Grids */
-            .services-grid, .products-grid, .testimonials-grid {
+            .services-grid, .products-grid, .testimonials-grid, .more-products-grid {
                 grid-template-columns: 1fr; /* Single column on mobile */
                 gap: 1.5rem;
             }
@@ -401,6 +474,8 @@
 
             .service-card h3, .product-card h3 { font-size: 1.3rem; }
             .product-card img { height: 120px; }
+            .explore-btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
+            .custom-text { font-size: 0.9rem; }
 
             /* Directions */
             .map-container iframe { height: 250px; }
@@ -422,6 +497,8 @@
             .intro p { font-size: 0.9rem; }
             .service-card h3, .product-card h3 { font-size: 1.2rem; }
             .product-card img { height: 100px; }
+            .explore-btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
+            .custom-text { font-size: 0.8rem; }
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
@@ -512,6 +589,78 @@
                 <div class="price">Starting from Rs 1 / per sticker</div>
             </div>
         </div>
+        <button class="explore-btn" onclick="toggleMoreProducts()">Explore More</button>
+        <div class="more-products">
+            <div class="more-products-grid">
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Flyers" alt="Flyers">
+                    <h3>Flyers</h3>
+                    <p>A5, full-color, single or double-sided.</p>
+                    <div class="price">Rs 2 / per flyer</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Wedding+Cards" alt="Wedding Cards">
+                    <h3>Wedding Cards</h3>
+                    <p>Custom designs, premium cardstock.</p>
+                    <div class="price">Starting from Rs 10 / per card</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Bill+Books" alt="Bill Books">
+                    <h3>Bill Books</h3>
+                    <p>Carbonless, custom numbering, A4/A5.</p>
+                    <div class="price">Rs 150 / per book</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Posters" alt="Posters">
+                    <h3>Posters</h3>
+                    <p>A3/A2, glossy or matte, vibrant prints.</p>
+                    <div class="price">Rs 50 / per poster</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Doctor+Files" alt="Doctor Files">
+                    <h3>Doctor Files</h3>
+                    <p>Durable folders, custom branding.</p>
+                    <div class="price">Rs 20 / per file</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Standee" alt="Standee">
+                    <h3>Standee</h3>
+                    <p>Portable, lightweight, full-color.</p>
+                    <div class="price">Rs 1500 / per unit</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Hoarding" alt="Hoarding">
+                    <h3>Hoarding</h3>
+                    <p>Large-scale, weatherproof, custom sizes.</p>
+                    <div class="price">Rs 50 / per sq ft</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Sun+Boards" alt="Sun Boards">
+                    <h3>Sun Boards</h3>
+                    <p>UV-resistant, lightweight, durable.</p>
+                    <div class="price">Rs 100 / per sq ft</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Packaging+Boxes" alt="Packaging Boxes">
+                    <h3>Packaging Material/Boxes</h3>
+                    <p>Custom sizes, sturdy materials.</p>
+                    <div class="price">Starting from Rs 5 / per box</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=ID+Cards" alt="ID Cards">
+                    <h3>ID Cards</h3>
+                    <p>Plastic, full-color, with lamination.</p>
+                    <div class="price">Rs 50 / per card</div>
+                </div>
+                <div class="product-card">
+                    <img src="https://via.placeholder.com/300x150?text=Designing" alt="Designing">
+                    <h3>Designing Services</h3>
+                    <p>Professional graphic design for prints.</p>
+                    <div class="price">Starting from Rs 500 / per project</div>
+                </div>
+            </div>
+            <p class="custom-text">Couldn't find what you are looking for? Then don't hesitate to <a href="#contact">contact us</a> for custom solutions!</p>
+        </div>
     </section>
 
     <!-- Directions Section -->
@@ -519,7 +668,7 @@
         <h2>Find Us</h2>
         <p>Visit our outlet at Trupti Prints, Ami Park Building, Vasai West. We’re open Mon-Fri, 9 AM - 5 PM.</p>
         <div class="map-container">
-            <iframe src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=Trupti%20Prints%20Vasai+(My%20Business%20Name)&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Trupti%20Prints%20Vasai+(My%20Business%20Name)&t=&z=14&ie=UTF8&iwloc=B&output=embed" allowfullscreen="" loading="lazy"></iframe>
         </div>
     </section>
 
@@ -542,7 +691,7 @@
         </div>
     </section>
 
-<!-- Contact Section -->
+    <!-- Contact Section -->
     <section id="contact" class="contact">
         <h2>Contact Us</h2>
         <form class="contact-form" onsubmit="alert('Thank you for your message! We’ll get back to you soon.'); return false;">
@@ -596,23 +745,31 @@
             }
         });
 
-function sendWA() {
-	let name = document.getElementById('name');
-	let email = document.getElementById('email');
-	let textInput = document.getElementById('text-input');
-  let mobileNumber = 9322754577;    //Enter your mobile number here
+        // Toggle More Products
+        function toggleMoreProducts() {
+            const moreProducts = document.querySelector('.more-products');
+            const exploreBtn = document.querySelector('.explore-btn');
+            moreProducts.classList.toggle('active');
+            exploreBtn.textContent = moreProducts.classList.contains('active') ? 'Show Less' : 'Explore More';
+        }
 
-	if (name.value.trim() == "") {
-		name.style.background = "lightpink";
-		name.style.border = "4px solid red";
-		alert('Please Enter your Name');
-		return false;
-	}
+        function sendWA() {
+            let name = document.getElementById('name');
+            let email = document.getElementById('email');
+            let textInput = document.getElementById('text-input');
+            let mobileNumber = 9322754577;    //Enter your mobile number here
 
-	let url = `https://wa.me/${mobileNumber}?text=` + "Name: " + name.value + "%0a" + "Email ID: " + email.value + "%0a" + "Message: " + textInput.value;
+            if (name.value.trim() == "") {
+                name.style.background = "lightpink";
+                name.style.border = "4px solid red";
+                alert('Please Enter your Name');
+                return false;
+            }
 
-	window.open(url, '_blank').focus();
-}
+            let url = `https://wa.me/${mobileNumber}?text=` + "Name: " + name.value + "%0a" + "Email ID: " + email.value + "%0a" + "Message: " + textInput.value;
+
+            window.open(url, '_blank').focus();
+        }
     </script>
 </body>
 </html>
