@@ -1,176 +1,335 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta name="description" content="Trupti Prints Solutions - Quality printing services in Vasai. We offer business cards, brochures, banners, and custom prints.">
-
-<meta name="google-site-verification" content="LyCP5idNd3axuGPg7wmSMkiSxMVyFyTq7dMXZRJQvC8" />
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "LocalBusiness",
-  "name": "Trupti Prints Solutions",
-  "image": "https://truptiprints.vercel.app/logo.png",
-  "address": {
-    "@type": "PostalAddress",
-    "streetAddress": "Ami Park Building, Vasai West",
-    "addressLocality": "Vasai",
-    "addressRegion": "Maharashtra",
-    "postalCode": "401202",
-    "addressCountry": "IN"
-  },
-  "telephone": "+919322754577",
-  "url": "https://truptiprints.vercel.app"
-}
-</script>
-
     <title>Trupti Prints Solutions - Your Printing Partner</title>
+    <meta name="description" content="Trupti Prints Solutions - Quality printing services in Vasai. We offer business cards, brochures, banners, and custom prints.">
+    <meta name="google-site-verification" content="LyCP5idNd3axuGPg7wmSMkiSxMVyFyTq7dMXZRJQvC8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="application/ld+json">
+        {"@context":"https://schema.org","@type":"LocalBusiness","name":"Trupti Prints Solutions","image":"https://truptiprints.vercel.app/logo.png","address":{"@type":"PostalAddress","streetAddress":"Ami Park Building, Vasai West","addressLocality":"Vasai","addressRegion":"Maharashtra","postalCode":"401202","addressCountry":"IN"},"telephone":"+919322754577","url":"https://truptiprints.vercel.app"}
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Poppins', sans-serif;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Poppins', sans-serif; }
 
+        /* Loader Styles */
+        #loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #f5f5dc;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+            transition: opacity 0.5s ease;
+        }
+        #loader.hidden { opacity: 0; pointer-events: none; }
+        .printer-animation, .printer { position: relative; transform: scale(0.7); }
+        .printing-text {
+            position: absolute;
+            opacity: 0;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 500;
+            color: #3e5f8a;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            transition: opacity 0.3s ease;
+            white-space: nowrap;
+        }
+        .top {
+            position: absolute;
+            background-color: #282c30;
+            width: 160px;
+            height: 70px;
+            border-radius: 20px 20px 0 0;
+            border: 5px solid #333;
+            transform: translate(-50%, -50%);
+            left: 50%;
+            top: 50%;
+            box-shadow: inset 20px 0 #1e2124;
+            z-index: -1;
+        }
+        .middle {
+            position: absolute;
+            background-color: #4a4f55;
+            border: 5px solid #333;
+            width: 250px;
+            height: 100px;
+            border-radius: 20px;
+            top: 30px;
+            left: -130px;
+            box-shadow: inset 20px 0 #373b3d;
+            z-index: 5;
+        }
+        .trace, .trace:before {
+            position: absolute;
+            background-color: #282c30;
+        }
+        .trace {
+            border: 5px solid #333;
+            width: 160px;
+            height: 80px;
+            border-radius: 10px;
+            left: -85px;
+            top: 110px;
+            box-shadow: inset 0 35px #1e2124;
+            z-index: 2;
+        }
+        .trace:before {
+            content: "";
+            width: 60px;
+            height: 20px;
+            border-radius: 0 0 10px 10px;
+            top: 80px;
+            left: 45px;
+            border: 5px solid #333;
+            border-top: none;
+        }
+        .trace:after {
+            position: absolute;
+            content: "";
+            width: 5px;
+            height: 50px;
+            background-color: #333;
+            left: 20px;
+            top: 15px;
+            box-shadow: 60px 0 #333, 115px 0 #333;
+        }
+        .paper {
+            position: absolute;
+            border: 5px solid #333;
+            background-color: white;
+            width: 120px;
+            height: 140px;
+            top: -70px;
+            left: -65px;
+            z-index: 3;
+            animation: printSimple 1.5s linear forwards;
+        }
+        .paper .printing-text {
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+        @keyframes printSimple {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(180px); }
+        }
+        #main-content { opacity: 0; transition: opacity 0.5s ease; }
+        #main-content.loaded { opacity: 1; }
+
+        /* General Body Styles */
         body {
             line-height: 1.6;
             color: #333;
-            background: #f0f4f8;
+            background: #f5f5dc;
             overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        /* Navigation */
+        /* Updated Navbar Styles */
         nav {
             position: fixed;
             top: 0;
             width: 100%;
-            background: linear-gradient(135deg, #2c3e50, #3498db);
+            background: linear-gradient(135deg, #6246ea, #f77f00);
             padding: 1rem 2rem;
             z-index: 1000;
             transition: all 0.3s ease;
+            border-bottom-left-radius: 10px;
+            border-bottom-right-radius: 10px;
         }
-
         nav.scrolled {
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
         }
-
         .nav-container {
             display: flex;
             justify-content: space-between;
             align-items: center;
+            max-width: 1200px;
+            margin: 0 auto;
         }
-
         .nav-menu {
             display: flex;
             list-style: none;
+            flex-wrap: wrap;
+            justify-content: center;
         }
-
         .nav-menu li {
-            margin: 0 1.5rem;
+            margin: 0 1rem;
         }
-
         .nav-menu li a {
-            color: white;
+            color: #fff;
             text-decoration: none;
             font-size: 1.1rem;
+            font-weight: 500;
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
             transition: color 0.3s ease;
         }
-
         .nav-menu li a:hover {
-            color: #f1c40f;
+            color: #fff;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 0.5rem 1rem;
+            border-radius: 12px;
         }
-
         .hamburger {
             display: none;
             font-size: 2rem;
-            color: white;
+            color: #fff;
             background: none;
             border: none;
             cursor: pointer;
         }
 
-        /* Hero Section with SVG Wave */
+        /* Hero Section CSS */
+        :root {
+            --primary-color: #6246ea;
+            --secondary-color: #888;
+            --accent-color: #f77f00;
+            --background-color: #fff;
+            --text-color: #222;
+            --transition-duration: 0.4s;
+            --shadow-sm: 0 3px 7px rgba(0, 0, 0, 0.08);
+            --shadow-md: 0 6px 15px rgba(0, 0, 0, 0.1);
+            --gradient: linear-gradient(135deg, var(--primary-color), var(--accent-color));
+        }
+
         .hero {
-            height: 100vh;
-            background: linear-gradient(135deg, #3498db, #8e44ad);
-            position: relative;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            background: linear-gradient(to right, #e9efff, #f0f4ff);
+            padding: 200px 0 150px 0;
             text-align: center;
-            color: white;
+            position: relative;
             overflow: hidden;
+            transition: padding-top 0.3s ease;
         }
 
         .hero-content {
-            z-index: 2;
-            animation: fadeInUp 1.5s ease-out;
-            padding: 1rem;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 0 20px;
         }
 
         .hero h1 {
-            font-size: 3.5rem;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.3);
+            font-size: 6rem;
+            color: var(--text-color);
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.06);
+            line-height: 1.1;
+            animation: fadeInHeading 1.2s ease-out forwards;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         .hero p {
-            font-size: 1.5rem;
-            margin-bottom: 2rem;
+            font-size: 1.6rem;
+            color: var(--secondary-color);
+            margin-bottom: 60px;
+            font-weight: 400;
+            animation: fadeInParagraph 1.4s ease-out forwards;
+            font-family: 'Outfit', sans-serif;
         }
 
-        .cta-btn {
+        .btn {
             display: inline-block;
-            padding: 1rem 2rem;
-            background: #f1c40f;
-            color: #2c3e50;
+            background: var(--gradient);
+            color: var(--background-color);
+            padding: 18px 40px;
+            border-radius: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            transition: all var(--transition-duration);
+            box-shadow: var(--shadow-md);
+            border: none;
+            cursor: pointer;
             text-decoration: none;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            transition: transform 0.3s ease, background 0.3s ease;
         }
 
-        .cta-btn:hover {
-            transform: scale(1.05);
-            background: #f39c12;
+        .btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
         }
 
-        .wave {
+        @keyframes fadeInHeading {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes fadeInParagraph {
+            from { opacity: 0; transform: translateY(50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero::before,
+        .hero::after {
+            content: "";
             position: absolute;
-            bottom: 0;
-            width: 100%;
-            z-index: 1;
+            border-radius: 50%;
+            opacity: 0.4;
         }
 
-        /* Section Styles */
-        section {
-            padding: 5rem 2rem;
-            position: relative;
-            z-index: 1;
+        .hero::before {
+            bottom: -150px;
+            left: -100px;
+            width: 500px;
+            height: 500px;
+            background: var(--primary-color);
+            animation: blob 10s linear infinite;
         }
 
-        h2 {
-            font-size: 2.5rem;
-            margin-bottom: 3rem;
-            text-align: center;
-            color: #2c3e50;
-            animation: fadeIn 1s ease-out;
+        .hero::after {
+            top: -100px;
+            right: -100px;
+            width: 400px;
+            height: 400px;
+            background: var(--accent-color);
+            animation: blobReverse 12s linear infinite;
+        }
+
+        @keyframes blob {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(50px, 20px) rotate(180deg); }
+            100% { transform: translate(0, 0) rotate(360deg); }
+        }
+
+        @keyframes blobReverse {
+            0% { transform: translate(0, 0) rotate(360deg); }
+            50% { transform: translate(-30px, -40px) rotate(180deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(70px);
+            transition: transform var(--transition-duration) ease-out, opacity var(--transition-duration) ease-out;
+        }
+
+        .animate-on-scroll.active {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* Intro Section */
         .intro {
             background: #fff;
             text-align: center;
+            padding: 5rem 2rem;
         }
 
         .intro p {
             max-width: 800px;
             margin: 0 auto;
             font-size: 1.2rem;
-            color: #666;
+            color: #333;
             animation: fadeInUp 1s ease-out 0.2s forwards;
             opacity: 0;
             padding: 0 1rem;
@@ -178,54 +337,87 @@
 
         /* Services Section */
         .services {
-            background: #f0f4f8;
+            background: #e9efff;
+            padding: 5rem 2rem;
+            text-align: center;
         }
 
-        .services-grid, .products-grid, .testimonials-grid {
+        .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 2rem;
             max-width: 1200px;
             margin: 0 auto;
+            justify-content: center;
         }
 
-        .service-card, .product-card, .testimonial-card {
-            background: #fff;
-            padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-            opacity: 0;
-            animation: slideIn 0.8s ease-out forwards;
-        }
-
-        .service-card:nth-child(1) { animation-delay: 0.2s; }
-        .service-card:nth-child(2) { animation-delay: 0.4s; }
-        .service-card:nth-child(3) { animation-delay: 0.6s; }
-        .service-card:nth-child(4) { animation-delay: 0.8s; }
-
-        .service-card:hover, .product-card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
-        }
-
-        .service-card h3, .product-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 1rem;
-            color: #3498db;
-        }
-
-        .service-card p, .product-card p {
-            color: #666;
-        }
-
-        /* Products Section */
+        /* Products Section with Tabs */
         .products {
             background: #fff;
+            padding: 5rem 2rem;
+            text-align: center;
         }
 
-        .products-grid {
+        .products-tabs {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .tab-buttons {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
             margin-bottom: 2rem;
+        }
+
+        .tab-btn {
+            background: #e9efff;
+            border: none;
+            padding: 1rem 2rem;
+            margin: 0.5rem;
+            cursor: pointer;
+            font-size: 1.1rem;
+            font-weight: 500;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+            color: #3e5f8a;
+        }
+
+        .tab-btn.active {
+            background: #3e5f8a;
+            color: white;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .tab-btn:hover {
+            background: #1b263b;
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            padding: 1rem;
+        }
+
+        .tab-content.active {
+            display: grid;
+        }
+
+        .product-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 2px solid #3e5f8a;
         }
 
         .product-card img {
@@ -236,119 +428,164 @@
             margin-bottom: 1rem;
         }
 
+        .product-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3e5f8a;
+            font-weight: 500;
+        }
+
+        .product-card p {
+            color: #333;
+        }
+
         .product-card .price {
             font-weight: bold;
-            color: #f1c40f;
+            color: #3e5f8a;
             margin-top: 0.5rem;
-        }
-
-        .product-card:nth-child(1) { animation-delay: 0.2s; }
-        .product-card:nth-child(2) { animation-delay: 0.4s; }
-        .product-card:nth-child(3) { animation-delay: 0.6s; }
-        .product-card:nth-child(4) { animation-delay: 0.8s; }
-
-        .explore-btn {
-            display: block;
-            margin: 0 auto;
-            padding: 1rem 2rem;
-            background: #3498db;
-            color: white;
-            border: none;
-            border-radius: 30px;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-        .explore-btn:hover {
-            background: #2980b9;
-            transform: scale(1.05);
-        }
-
-        .more-products {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.5s ease-out;
-        }
-
-        .more-products.active {
-            max-height: 3000px; /* Increased to ensure all content is visible */
-        }
-
-        .more-products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 2rem;
-            max-width: 1200px;
-            margin: 2rem auto 0;
-        }
-
-        .more-products-grid .product-card:nth-child(1) { animation-delay: 0.2s; }
-        .more-products-grid .product-card:nth-child(2) { animation-delay: 0.3s; }
-        .more-products-grid .product-card:nth-child(3) { animation-delay: 0.4s; }
-        .more-products-grid .product-card:nth-child(4) { animation-delay: 0.5s; }
-        .more-products-grid .product-card:nth-child(5) { animation-delay: 0.6s; }
-        .more-products-grid .product-card:nth-child(6) { animation-delay: 0.7s; }
-        .more-products-grid .product-card:nth-child(7) { animation-delay: 0.8s; }
-        .more-products-grid .product-card:nth-child(8) { animation-delay: 0.9s; }
-        .more-products-grid .product-card:nth-child(9) { animation-delay: 1.0s; }
-        .more-products-grid .product-card:nth-child(10) { animation-delay: 1.1s; }
-        .more-products-grid .product-card:nth-child(11) { animation-delay: 1.2s; }
-
-        .custom-text {
-            text-align: center;
-            font-size: 1rem;
-            color: #666;
-            margin: 2rem auto;
-            max-width: 1200px;
-            padding: 0 1rem;
-            opacity: 0;
-            animation: fadeInUp 0.8s ease-out forwards;
-            animation-delay: 1.3s; /* Delayed to appear after last product card */
-        }
-
-        .custom-text a {
-            color: #3498db;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .custom-text a:hover {
-            color: #2980b9;
         }
 
         /* Testimonials Section */
         .testimonials {
-            background: #f0f4f8;
+            background: #fff;
+            padding: 5rem 2rem;
+            text-align: center;
+        }
+
+        .testimonials-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            justify-content: center;
+        }
+
+        .service-card {
+            background: #fff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            opacity: 0;
+            animation: slideIn 0.8s ease-out forwards;
+            border: 2px solid transparent;
+        }
+
+        .testimonial-card {
+            background: #e9efff;
+            padding: 2rem;
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease, border 0.3s ease;
+            opacity: 0;
+            animation: slideIn 0.8s ease-out forwards;
+            border: 2px solid transparent;
+        }
+
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            border: 2px solid #3e5f8a;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #3e5f8a;
+            font-weight: 500;
+        }
+
+        .service-card p {
+            color: #333;
         }
 
         .testimonial-card p {
             font-style: italic;
-            color: #555;
+            color: #333;
             margin-bottom: 1rem;
         }
 
         .testimonial-card .author {
             font-weight: bold;
-            color: #2c3e50;
+            color: #1b263b;
         }
 
-        .testimonial-card:nth-child(1) { animation-delay: 0.2s; }
-        .testimonial-card:nth-child(2) { animation-delay: 0.4s; }
-        .testimonial-card:nth-child(3) { animation-delay: 0.6s; }
+        /* Animation Delays */
+        .service-card:nth-child(1), .testimonial-card:nth-child(1) { animation-delay: 0.2s; }
+        .service-card:nth-child(2), .testimonial-card:nth-child(2) { animation-delay: 0.4s; }
+        .service-card:nth-child(3), .testimonial-card:nth-child(3) { animation-delay: 0.6s; }
+        .service-card:nth-child(4) { animation-delay: 0.8s; }
+
+        /* Portfolio Section */
+        .portfolio {
+            background: #e9efff;
+            padding: 5rem 2rem;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        .portfolio-wrapper {
+            display: flex;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .portfolio-items {
+            display: flex;
+            animation: scroll 25s linear infinite;
+        }
+
+        .portfolio-items:hover {
+            animation-play-state: paused;
+        }
+
+        .portfolio-item {
+            flex: 0 0 auto;
+            width: 300px;
+            margin: 0 1rem;
+            background: #fff;
+            padding: 1rem;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .portfolio-item:hover {
+            transform: scale(1.05);
+        }
+
+        .portfolio-item img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .portfolio-item p {
+            margin-top: 1rem;
+            color: #333;
+            font-size: 1rem;
+        }
+
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
 
         /* Directions Section */
         .directions {
-            background: #fff;
+            background: #e9efff;
             text-align: center;
+            padding: 5rem 2rem;
         }
 
         .map-container {
             max-width: 800px;
             margin: 2rem auto;
-            border-radius: 10px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             animation: fadeInUp 1s ease-out 0.4s forwards;
             opacity: 0;
         }
@@ -361,8 +598,9 @@
 
         /* Contact Section */
         .contact {
-            background: #f0f4f8;
+            background: #fff;
             text-align: center;
+            padding: 5rem 2rem;
         }
 
         .contact-form {
@@ -370,8 +608,8 @@
             margin: 0 auto;
             background: #fff;
             padding: 2rem;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             animation: fadeInUp 1s ease-out 0.2s forwards;
             opacity: 0;
         }
@@ -394,27 +632,30 @@
         }
 
         .contact-form select:focus {
-            border-color: #3498db;
+            border-color: #3e5f8a;
             outline: none;
         }
 
         .contact-form button {
             padding: 1rem 2rem;
-            background: #3498db;
+            background: linear-gradient(135deg, #3e5f8a, #1b263b);
             color: white;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            transition: background 0.3s ease;
+            transition: background 0.3s ease, box-shadow 0.3s ease;
+            font-weight: 500;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
         }
 
         .contact-form button:hover {
-            background: #2980b9;
+            background: linear-gradient(135deg, #1b263b, #3e5f8a);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.3);
         }
 
         /* Footer */
         footer {
-            background: #2c3e50;
+            background: linear-gradient(135deg, #1b263b, #3e5f8a);
             color: white;
             text-align: center;
             padding: 2rem;
@@ -423,28 +664,26 @@
         }
 
         /* Animations */
-        @keyframes fadeIn {
-            from { opacity: 0; }
-            to { opacity: 1; }
-        }
-
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        @keyframes slideIn {
-            from { opacity: 0; transform: translateX(-20px); }
-            to { opacity: 1; transform: translateX(0); }
-        }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
 
         /* Responsive Design */
-        @media (max-width: 768px) {
-            /* Navigation */
-            .hamburger {
-                display: block;
-            }
+        @media (min-width: 1200px) {
+            .services-grid { grid-template-columns: repeat(4, 1fr); }
+            .testimonials-grid { grid-template-columns: repeat(3, 1fr); }
+            .tab-content { grid-template-columns: repeat(3, 1fr); }
+        }
 
+        @media (max-width: 1199px) and (min-width: 768px) {
+            .services-grid { grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); }
+            .testimonials-grid { grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); }
+            .tab-content { grid-template-columns: repeat(2, 1fr); }
+            .nav-menu li { margin: 0 0.8rem; }
+        }
+
+        @media (max-width: 767px) {
+            .hamburger { display: block; }
             .nav-menu {
                 display: none;
                 flex-direction: column;
@@ -452,296 +691,328 @@
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background: #2c3e50;
+                background: linear-gradient(135deg, #6246ea, #f77f00);
                 padding: 1rem 0;
+                border-bottom-left-radius: 10px;
+                border-bottom-right-radius: 10px;
             }
-
             .nav-menu.active {
                 display: flex;
             }
-
             .nav-menu li {
                 margin: 1rem 0;
                 text-align: center;
             }
-
-            /* Hero */
-            .hero h1 { font-size: 2rem; }
-            .hero p { font-size: 1rem; }
-            .cta-btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
-
-            /* Sections */
-            section { padding: 3rem 1rem; }
-            h2 { font-size: 1.8rem; }
-            .intro p { font-size: 1rem; }
-
-            /* Grids */
-            .services-grid, .products-grid, .testimonials-grid, .more-products-grid {
-                grid-template-columns: 1fr; /* Single column on mobile */
-                gap: 1.5rem;
+            .hero {
+                padding: 120px 0 80px 0;
             }
-
-            .service-card, .product-card, .testimonial-card {
-                padding: 1.5rem;
+            .hero.menu-active {
+                padding-top: 300px;
             }
-
-            .service-card h3, .product-card h3 { font-size: 1.3rem; }
-            .product-card img { height: 120px; }
-            .explore-btn { padding: 0.8rem 1.5rem; font-size: 1rem; }
-            .custom-text { font-size: 0.9rem; }
-
-            /* Contact */
-            .contact-form { padding: 1.5rem; }
-            .contact-form input, .contact-form textarea, .contact-form select { padding: 0.8rem; font-size: 0.9rem; }
-            .contact-form button { padding: 0.8rem 1.5rem; font-size: 1rem; }
-
-            /* Directions */
-            .map-container iframe { height: 250px; }
-
-            /* Footer */
-            footer { padding: 1.5rem; font-size: 0.9rem; }
+            .hero h1 { font-size: 3rem; }
+            .hero p { font-size: 1.2rem; }
+            .btn { padding: 14px 30px; }
+            .services-grid, .testimonials-grid { grid-template-columns: 1fr; }
+            .tab-content { grid-template-columns: 1fr; }
+            .printer-animation { transform: scale(0.6); }
+            .printing-text { font-size: 1.1rem; }
         }
 
-        @media (max-width: 480px) {
-            .hero h1 { font-size: 1.8rem; }
-            .hero p { font-size: 0.9rem; }
-            .cta-btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
-            h2 { font-size: 1.5rem; }
-            .intro p { font-size: 0.9rem; }
-            .service-card h3, .product-card h3 { font-size: 1.2rem; }
-            .product-card img { height: 100px; }
-            .explore-btn { padding: 0.6rem 1.2rem; font-size: 0.9rem; }
-            .custom-text { font-size: 0.8rem; }
+        @media (max-width: 576px) {
+            .hero { padding: 100px 0 60px 0; }
+            .hero.menu-active { padding-top: 250px; }
+            .hero h1 { font-size: 2.5rem; }
+            .hero p { font-size: 1rem; }
+            .btn { padding: 12px 25px; }
+            .hero::before { width: 300px; height: 300px; }
+            .hero::after { width: 250px; height: 250px; }
+            .printer-animation { transform: scale(0.5); }
+            .printing-text { font-size: 1rem; }
         }
     </style>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <!-- Navigation -->
-    <nav>
-        <div class="nav-container">
-            <button class="hamburger">☰</button>
-            <ul class="nav-menu">
-                <li><a href="#intro">Home</a></li>
-                <li><a href="#services">Services</a></li>
-                <li><a href="#products">Products</a></li>
-                <li><a href="#directions">Directions</a></li>
-                <li><a href="#testimonials">Testimonials</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </div>
-    </nav>
-
-    <!-- Hero Section -->
-    <section class="hero">
-        <div class="hero-content">
-            <h1>Welcome to Trupti Prints </h1>
-            <p>Transforming your ideas into stunning prints with precision and passion.</p>
-            <a href="#contact" class="cta-btn">Contact Us</a>
-        </div>
-        <svg class="wave" viewBox="0 0 1440 120" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M0 36L60 42C120 48 240 60 360 66C480 72 600 72 720 60C840 48 960 24 1080 18C1200 12 1320 24 1380 30L1440 36V120H0V36Z" fill="#fff"/>
-        </svg>
-    </section>
-
-    <!-- Intro Section -->
-    <section id="intro" class="intro">
-        <h2>About Us</h2>
-        <p>At Trupti Prints Solutions, we specialize in delivering high-quality printing services tailored to your needs. With years of expertise and cutting-edge technology, we bring your vision to life—whether it’s business cards, banners, or custom designs. Our commitment to excellence and customer satisfaction sets us apart as your trusted printing partner.</p>
-    </section>
-
-    <!-- Services Section -->
-    <section id="services" class="services">
-        <h2>Our Services</h2>
-        <div class="services-grid">
-            <div class="service-card">
-                <h3>Business Cards</h3>
-                <p>Premium, custom-designed cards to make a lasting impression.</p>
-            </div>
-            <div class="service-card">
-                <h3>Large Format Printing</h3>
-                <p>Banners, posters, and more with vibrant colors and durability.</p>
-            </div>
-            <div class="service-card">
-                <h3>Brochures & Flyers</h3>
-                <p>Eye-catching marketing materials to promote your brand.</p>
-            </div>
-            <div class="service-card">
-                <h3>Custom Solutions</h3>
-                <p>Personalized prints for any project, big or small.</p>
+    <div id="loader">
+        <div id="printer-animation" class="printer-animation">
+            <div class="printer">
+                <div class="paper">
+                    <div class="printing-text">Ready To <br>Print</div>
+                </div>
+                <div class="top"></div>
+                <div class="middle"></div>
+                <div class="trace"></div>
             </div>
         </div>
-    </section>
-
-    <!-- Products Section -->
-    <section id="products" class="products">
-        <h2>Our Products</h2>
-        <div class="products-grid">
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x150?text=Business+Cards" alt="Business Cards">
-                <h3>Premium Business Cards</h3>
-                <p>350gsm, glossy finish, full-color.</p>
-                <div class="price"> Rs 1250 / 1000</div>
+    </div>
+    <div id="main-content">
+        <nav>
+            <div class="nav-container">
+                <button class="hamburger">☰</button>
+                <ul class="nav-menu">
+                    <li><a href="#intro">Home</a></li>
+                    <li><a href="#services">Services</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#portfolio">Portfolio</a></li>
+                    <li><a href="#directions">Directions</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
             </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x150?text=Vinyl+Banner" alt="Vinyl Banner">
-                <h3>Vinyl Banners</h3>
-                <p>13oz vinyl, weather-resistant.</p>
-                <div class="price">Rs 35 / per sq ft</div>
+        </nav>
+        <section id="home" class="hero">
+            <div class="hero-content">
+                <h1 class="animate-on-scroll">Elevate Your Brand with Trupti Prints</h1>
+                <p class="animate-on-scroll">Transforming ideas into impactful prints with cutting-edge technology and creative expertise.</p>
+                <a href="#contact" class="btn animate-on-scroll">Contact Us</a>
             </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x150?text=Brochure" alt="Brochure">
-                <h3>Tri-Fold Brochures</h3>
-                <p>A4, glossy or matte finish.</p>
-                <div class="price">Rs 3.5 / per brochure</div>
-            </div>
-            <div class="product-card">
-                <img src="https://via.placeholder.com/300x150?text=Stickers" alt="Stickers">
-                <h3>Custom Stickers</h3>
-                <p>Vinyl, die-cut, any design.</p>
-                <div class="price">Starting from Rs 1 / per sticker</div>
-            </div>
-        </div>
-        <button class="explore-btn" onclick="toggleMoreProducts()">Explore More</button>
-        <div class="more-products">
-            <div class="more-products-grid">
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Flyers" alt="Flyers">
-                    <h3>Flyers</h3>
-                    <p>A5, full-color, single or double-sided.</p>
-                    <div class="price">Rs 2 / per flyer</div>
+        </section>
+        <section id="intro" class="intro">
+            <h2>About Us</h2>
+            <p>At Trupti Prints Solutions, we specialize in delivering high-quality printing services tailored to your needs. With years of expertise and cutting-edge technology, we bring your vision to life—whether it’s business cards, banners, or custom designs. Our commitment to excellence and customer satisfaction sets us apart as your trusted printing partner.</p>
+        </section>
+        <section id="services" class="services">
+            <h2>Our Services</h2>
+            <div class="services-grid">
+                <div class="service-card">
+                    <h3>Business Cards</h3>
+                    <p>Premium, custom-designed cards to make a lasting impression.</p>
                 </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Wedding+Cards" alt="Wedding Cards">
-                    <h3>Wedding Cards</h3>
-                    <p>Custom designs, premium cardstock.</p>
-                    <div class="price">Starting from Rs 10 / per card</div>
+                <div class="service-card">
+                    <h3>Large Format Printing</h3>
+                    <p>Banners, posters, and more with vibrant colors and durability.</p>
                 </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Bill+Books" alt="Bill Books">
-                    <h3>Bill Books</h3>
-                    <p>Carbonless, custom numbering, A4/A5.</p>
-                    <div class="price">Rs 150 / per book</div>
+                <div class="service-card">
+                    <h3>Brochures & Flyers</h3>
+                    <p>Eye-catching marketing materials to promote your brand.</p>
                 </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Posters" alt="Posters">
-                    <h3>Posters</h3>
-                    <p>A3/A2, glossy or matte, vibrant prints.</p>
-                    <div class="price">Rs 50 / per poster</div>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Doctor+Files" alt="Doctor Files">
-                    <h3>Doctor Files</h3>
-                    <p>Durable folders, custom branding.</p>
-                    <div class="price">Rs 20 / per file</div>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Standee" alt="Standee">
-                    <h3>Standee</h3>
-                    <p>Portable, lightweight, full-color.</p>
-                    <div class="price">Rs 1500 / per unit</div>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Hoarding" alt="Hoarding">
-                    <h3>Hoarding</h3>
-                    <p>Large-scale, weatherproof, custom sizes.</p>
-                    <div class="price">Rs 50 / per sq ft</div>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Sun+Boards" alt="Sun Boards">
-                    <h3>Sun Boards</h3>
-                    <p>UV-resistant, lightweight, durable.</p>
-                    <div class="price">Rs 100 / per sq ft</div>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Packaging+Boxes" alt="Packaging Boxes">
-                    <h3>Packaging Material/Boxes</h3>
-                    <p>Custom sizes, sturdy materials.</p>
-                    <div class="price">Starting from Rs 5 / per box</div>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=ID+Cards" alt="ID Cards">
-                    <h3>ID Cards</h3>
-                    <p>Plastic, full-color, with lamination.</p>
-                    <div class="price">Rs 50 / per card</div>
-                </div>
-                <div class="product-card">
-                    <img src="https://via.placeholder.com/300x150?text=Designing" alt="Designing">
-                    <h3>Designing Services</h3>
-                    <p>Professional graphic design for prints.</p>
-                    <div class="price">Starting from Rs 500 / per project</div>
+                <div class="service-card">
+                    <h3>Custom Solutions</h3>
+                    <p>Personalized prints for any project, big or small.</p>
                 </div>
             </div>
-            <p class="custom-text">Couldn't find what you are looking for? Then don't hesitate to <a href="#contact">contact us</a> for custom solutions!</p>
-        </div>
-    </section>
-
-    <!-- Directions Section -->
-    <section id="directions" class="directions">
-        <h2>Find Us</h2>
-        <p>Visit our outlet at Trupti Prints, Ami Park Building, Vasai West. We’re open Mon-Fri, 9 AM - 5 PM.</p>
-        <div class="map-container">
-            <iframe src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Trupti%20Prints%20Vasai+(My%20Business%20Name)&t=&z=14&ie=UTF8&iwloc=B&output=embed" allowfullscreen="" loading="lazy"></iframe>
-        </div>
-    </section>
-
-    <!-- Testimonials Section -->
-    <section id="testimonials" class="testimonials">
-        <h2>What Our Clients Say</h2>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <p>"Trupti Prints turned my vision into reality with stunning business cards!"</p>
-                <div class="author">- Ankit Shah</div>
+        </section>
+        <section id="products" class="products">
+            <h2>Our Products</h2>
+            <div class="products-tabs">
+                <div class="tab-buttons">
+                    <button class="tab-btn active" data-tab="stationery">Stationery</button>
+                    <button class="tab-btn" data-tab="marketing">Marketing Materials</button>
+                    <button class="tab-btn" data-tab="large-format">Large Format</button>
+                    <button class="tab-btn" data-tab="specialty">Specialty</button>
+                </div>
+                <div id="stationery" class="tab-content active">
+                    <div class="product-card">
+                        <img src="https://graphicburger.com/wp-content/uploads/2014/12/Stack-Letterpress-Business-Card-MockUp-full.jpg" alt="Business Cards">
+                        <h3>Premium Business Cards</h3>
+                        <p>350gsm, glossy finish, full-color.</p>
+                        <div class="price">Rs 1 / per card</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ86FpAsa28mKDi2t5tyhjY5DjPerM-En4yZ42iVvfsQ_0i1MFB1N5JrjM&s=10" alt="Bill Books">
+                        <h3>Bill Books</h3>
+                        <p>Carbonless, custom numbering, A4/A5.</p>
+                        <div class="price">Rs 150 / per book</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://www.pixeden.com/galleries/hanging-identification-cards-psd-mockup-set/001-hanging-identification-id-card-corporate-brand-logotype-graphic-design-psd-mockup-resource-pixeden.jpg" alt="ID Cards">
+                        <h3>ID Cards</h3>
+                        <p>Plastic, full-color, with lamination.</p>
+                        <div class="price">Rs 50 / per card</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://img.freepik.com/premium-vector/medical-brochure-design-cover_217752-3548.jpg?w=740" alt="Doctor Files">
+                        <h3>Doctor Files</h3>
+                        <p>Durable folders, custom branding.</p>
+                        <div class="price">Rs 20 / per file</div>
+                    </div>
+                </div>
+                <div id="marketing" class="tab-content">
+                    <div class="product-card">
+                        <img src="https://graphicburger.com/wp-content/uploads/2014/01/Tri-Fold-Brochure-MockUp-full.jpg" alt="Brochure">
+                        <h3>Tri-Fold Brochures</h3>
+                        <p>A4, glossy or matte finish.</p>
+                        <div class="price">Rs 3.5 / per brochure</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://www.pixeden.com/media/k2/galleries/454/001-a4-paper-brand-stationery-isometric-print-mock-up-psd.jpg" alt="Flyers">
+                        <h3>Flyers</h3>
+                        <p>A5, full-color, single or double-sided.</p>
+                        <div class="price">Rs 2 / per flyer</div>
+                    </div>
+                  <div class="product-card">
+                        <img src="https://img.freepik.com/free-vector/flat-design-photobook-concept-template_23-2149943444.jpg?t=st=1742488812~exp=1742492412~hmac=283b6ea29d2e1cf2ee4c78d261be1881961e771bbb054956157afba4b2041c0b&w=1380" alt="Catalogue">
+                        <h3>Catalogue</h3>
+                        <p>Vinyl, die-cut, any design.</p>
+                        <div class="price">Starting from Rs 30 / per catalogue</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://drive.google.com/file/d/1TjSKfy6pYK5Nf5bUeYHU5P3P9tLwe8Tk/view?usp=drivesdk" alt="Posters">
+                        <h3>Posters</h3>
+                        <p>A3/A2, glossy or matte, vibrant prints.</p>
+                        <div class="price">Rs 50 / per poster</div>
+                    </div>
+                </div>
+                <div id="large-format" class="tab-content">
+                    <div class="product-card">
+                        <img src="https://drive.google.com/file/d/1UqVQITcwVxqNXGnrtAjycgLGW_jI7yjD/view?usp=drivesdk" alt="Vinyl Banner">
+                        <h3>Vinyl Banners</h3>
+                        <p>13oz vinyl, weather-resistant.</p>
+                        <div class="price">Rs 35 / per sq ft</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://unblast.com/wp-content/uploads/2020/09/85x200cm-Roll-up-Mockup-1024x767.jpg" alt="Standee">
+                        <h3>Standee</h3>
+                        <p>Portable, lightweight, full-color.</p>
+                        <div class="price">Rs 1500 / per unit</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://drive.google.com/file/d/1ImyN_6np-KI8d6l8syIl6EYFBrT8jprJ/view?usp=drivesdk" alt="Hoarding">
+                        <h3>Hoarding</h3>
+                        <p>Large-scale, weatherproof, custom sizes.</p>
+                        <div class="price">Rs 50 / per sq ft</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://drive.google.com/file/d/145iUfauk8MxsDVjGEvk5Jk4mPjv1fXEa/view?usp=drivesdk" alt="Sun Boards">
+                        <h3>Sun Boards</h3>
+                        <p>UV-resistant, lightweight, durable.</p>
+                        <div class="price">Rs 100 / per sq ft</div>
+                    </div>
+                </div>
+                <div id="specialty" class="tab-content">
+                    <div class="product-card">
+                        <img src="https://drive.google.com/thumbnail?id=1rXW8yRU2SHNywPuDyMmnhOjaEXJ9PA-a" alt="Wedding Cards">
+                        <h3>Wedding Cards</h3>
+                        <p>Custom designs, premium cardstock.</p>
+                        <div class="price">Starting from Rs 10 / per card</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://www.pixeden.com/media/k2/galleries/1734/001-magnetic-box-boxes-packaging-branding-set-collection-pack-graphic-free-psd-mockup-pixeden.jpg" alt="Packaging Boxes">
+                        <h3>Packaging Material/Boxes</h3>
+                        <p>Custom sizes, sturdy materials.</p>
+                        <div class="price">Starting from Rs 5 / per box</div>
+                    </div>
+                  <div class="product-card">
+                        <img src="https://m.media-amazon.com/images/I/71qT1ugzf3L._AC_UF1000,1000_QL80_.jpg" alt="Stickers">
+                        <h3>Custom Stickers</h3>
+                        <p>Vinyl, die-cut, any design.</p>
+                        <div class="price">Starting from Rs 1 / per sticker</div>
+                    </div>
+                    <div class="product-card">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS-L08A1SLS0LbBUJsyOnRSOEzFIxD3MLyrqVFLdrGIVC_Acn39ufcE7816&s=10" alt="Designing">
+                        <h3>Designing Services</h3>
+                        <p>Professional graphic design for prints.</p>
+                        <div class="price">Starting from Rs 500 / per project</div>
+                    </div>
+                </div>
             </div>
-            <div class="testimonial-card">
-                <p>"Their banners are top-notch—vibrant and durable for our events."</p>
-                <div class="author">- Darshan Patil</div>
+        </section>
+        <section id="portfolio" class="portfolio">
+            <h2>Our Portfolio</h2>
+            <div class="portfolio-wrapper">
+                <div class="portfolio-items">
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200?text=Business+Cards" alt="Business Card Sample">
+                        <p>Custom Business Cards for ABC Corp</p>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200?text=Vinyl+Banner" alt="Vinyl Banner Sample">
+                        <p>Vinyl Banner for Event XYZ</p>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200?text=Brochure" alt="Brochure Sample">
+                        <p>Tri-Fold Brochure for Client 123</p>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200?text=Stickers" alt="Stickers Sample">
+                        <p>Custom Stickers for Retail Brand</p>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200?text=Business+Cards" alt="Business Card Sample">
+                        <p>Custom Business Cards for ABC Corp</p>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200?text=Vinyl+Banner" alt="Vinyl Banner Sample">
+                        <p>Vinyl Banner for Event XYZ</p>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200?text=Brochure" alt="Brochure Sample">
+                        <p>Tri-Fold Brochure for Client 123</p>
+                    </div>
+                    <div class="portfolio-item">
+                        <img src="https://via.placeholder.com/300x200?text=Stickers" alt="Stickers Sample">
+                        <p>Custom Stickers for Retail Brand</p>
+                    </div>
+                </div>
             </div>
-            <div class="testimonial-card">
-                <p>"Fast service and amazing quality. Highly recommend their stickers!"</p>
-                <div class="author">- Alico India</div>
+        </section>
+        <section id="testimonials" class="testimonials">
+            <h2>What Our Clients Say</h2>
+            <div class="testimonials-grid">
+                <div class="testimonial-card">
+                    <p>"Trupti Prints turned my vision into reality with stunning business cards!"</p>
+                    <div class="author">- Ankit Shah</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Their banners are top-notch—vibrant and durable for our events."</p>
+                    <div class="author">- Darshan Patil</div>
+                </div>
+                <div class="testimonial-card">
+                    <p>"Fast service and amazing quality. Highly recommend their stickers!"</p>
+                    <div class="author">- Alico India</div>
+                </div>
             </div>
-        </div>
-    </section>
-
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <h2>Contact Us</h2>
-        <form class="contact-form" onsubmit="alert('Thank you for your message! We’ll get back to you soon.'); return false;">
-            <input type="text" id="name" name="name" placeholder="Your Name" required>
-            <input type="email" id="email" name="email" placeholder="Your Email" required>
-            <select id="product" name="product" required>
-                <option value="" disabled selected>Select a Product</option>
-                <option value="Premium Business Cards">Premium Business Cards</option>
-                <option value="Vinyl Banners">Vinyl Banners</option>
-                <option value="Tri-Fold Brochures">Tri-Fold Brochures</option>
-                <option value="Custom Stickers">Custom Stickers</option>
-                <option value="Flyers">Flyers</option>
-                <option value="Wedding Cards">Wedding Cards</option>
-                <option value="Bill Books">Bill Books</option>
-                <option value="Posters">Posters</option>
-                <option value="Doctor Files">Doctor Files</option>
-                <option value="Standee">Standee</option>
-                <option value="Hoarding">Hoarding</option>
-                <option value="Sun Boards">Sun Boards</option>
-                <option value="Packaging Material/Boxes">Packaging Material/Boxes</option>
-                <option value="ID Cards">ID Cards</option>
-                <option value="Designing Services">Designing Services</option>
-                <option value="Other">Other (Please specify in message)</option>
-            </select>
-            <textarea placeholder="Your Message" rows="5" id="text-input" name="message" required></textarea>
-            <button type="submit" onClick="sendWA()">Send Message</button>
-        </form>
-    </section>
-
-    <!-- Footer -->
-    <footer>
-        <p>© 2025 Trupi Prints. All rights reserved.</p>
-    </footer>
-
-    <!-- JavaScript -->
+        </section>
+        <section id="directions" class="directions">
+            <h2>Find Us</h2>
+            <p>Visit our outlet at Trupti Prints, Ami Park Building, Vasai West. We’re open Mon-Fri, 9 AM - 5 PM.</p>
+            <div class="map-container">
+                <iframe src="https://maps.google.com/maps?width=100%25&height=600&hl=en&q=Trupti%20Prints%20Vasai+(My%20Business%20Name)&t=&z=14&ie=UTF8&iwloc=B&output=embed" allowfullscreen="" loading="lazy"></iframe>
+            </div>
+        </section>
+        <section id="contact" class="contact">
+            <h2>Contact Us</h2>
+            <form class="contact-form" onsubmit="alert('Thank you for your message! We’ll get back to you soon.'); return false;">
+                <input type="text" id="name" name="name" placeholder="Your Name" required>
+                <input type="email" id="email" name="email" placeholder="Your Email" required>
+                <select id="product" name="product" required>
+                    <option value="" disabled selected>Select a Product</option>
+                    <option value="Premium Business Cards">Premium Business Cards</option>
+                    <option value="Vinyl Banners">Vinyl Banners</option>
+                    <option value="Tri-Fold Brochures">Tri-Fold Brochures</option>
+                    <option value="Custom Stickers">Custom Stickers</option>
+                    <option value="Flyers">Flyers</option>
+                    <option value="Wedding Cards">Wedding Cards</option>
+                    <option value="Bill Books">Bill Books</option>
+                    <option value="Posters">Posters</option>
+                    <option value="Doctor Files">Doctor Files</option>
+                    <option value="Standee">Standee</option>
+                    <option value="Hoarding">Hoarding</option>
+                    <option value="Sun Boards">Sun Boards</option>
+                    <option value="Packaging Material/Boxes">Packaging Material/Boxes</option>
+                    <option value="ID Cards">ID Cards</option>
+                    <option value="Designing Services">Designing Services</option>
+                    <option value="Other">Other (Please specify in message)</option>
+                </select>
+                <textarea placeholder="Your Message" rows="5" id="text-input" name="message" required></textarea>
+                <button type="submit" onclick="sendWA()">Send Message</button>
+            </form>
+        </section>
+        <footer>
+            <p>© 2025 Trupti Prints. All rights reserved.</p>
+        </footer>
+    </div>
     <script>
-        // Sticky Nav Effect
+        // Tab Functionality
+        document.querySelectorAll('.tab-btn').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+                
+                button.classList.add('active');
+                document.getElementById(button.getAttribute('data-tab')).classList.add('active');
+            });
+        });
+
         window.addEventListener('scroll', () => {
             const nav = document.querySelector('nav');
             if (window.scrollY > 50) {
@@ -751,62 +1022,85 @@
             }
         });
 
-        // Smooth Scroll for Nav Links
         document.querySelectorAll('nav a').forEach(anchor => {
             anchor.addEventListener('click', function(e) {
                 e.preventDefault();
                 const target = document.querySelector(this.getAttribute('href'));
                 target.scrollIntoView({ behavior: 'smooth' });
-                if (window.innerWidth <= 768) {
+                if (window.innerWidth <= 767) {
                     document.querySelector('.nav-menu').classList.remove('active');
+                    document.querySelector('.hero').classList.remove('menu-active');
                 }
             });
         });
 
-        // Hamburger Menu Toggle
         const hamburger = document.querySelector('.hamburger');
         const navMenu = document.querySelector('.nav-menu');
+        const heroSection = document.querySelector('.hero');
+
         hamburger.addEventListener('click', () => {
             navMenu.classList.toggle('active');
-        });
-
-        // Close menu when clicking outside on mobile
-        document.addEventListener('click', (e) => {
-            if (window.innerWidth <= 768 && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
-                navMenu.classList.remove('active');
+            if (window.innerWidth <= 767) {
+                heroSection.classList.toggle('menu-active');
             }
         });
 
-        // Toggle More Products
-        function toggleMoreProducts() {
-            const moreProducts = document.querySelector('.more-products');
-            const exploreBtn = document.querySelector('.explore-btn');
-            moreProducts.classList.toggle('active');
-            exploreBtn.textContent = moreProducts.classList.contains('active') ? 'Show Less' : 'Explore More';
-        }
+        document.addEventListener('click', (e) => {
+            if (window.innerWidth <= 767 && !navMenu.contains(e.target) && !hamburger.contains(e.target)) {
+                navMenu.classList.remove('active');
+                heroSection.classList.remove('menu-active');
+            }
+        });
 
         function sendWA() {
             let name = document.getElementById('name');
             let email = document.getElementById('email');
             let product = document.getElementById('product');
             let textInput = document.getElementById('text-input');
-            let mobileNumber = 9322754577;    //Enter your mobile number here
-
-            if (name.value.trim() == "") {
+            let mobileNumber = 9322754577;
+            if (name.value.trim() === "") {
                 name.style.background = "lightpink";
                 name.style.border = "4px solid red";
                 alert('Please Enter your Name');
                 return false;
             }
-
-            let url = `https://wa.me/${mobileNumber}?text=` + 
-                "Name: " + name.value + "%0a" + 
-                "Email ID: " + email.value + "%0a" + 
-                "Product Enquiry: " + product.value + "%0a" + 
+            let url = `https://wa.me/${mobileNumber}?text=` +
+                "Name: " + name.value + "%0a" +
+                "Email ID: " + email.value + "%0a" +
+                "Product Enquiry: " + product.value + "%0a" +
                 "Message: " + textInput.value;
-
             window.open(url, '_blank').focus();
         }
+
+        window.onload = function() {
+            const loader = document.getElementById('loader');
+            const mainContent = document.getElementById('main-content');
+            const printingText = document.querySelector('.printing-text');
+
+            setTimeout(() => {
+                printingText.style.opacity = 1;
+            }, 1000);
+
+            setTimeout(() => {
+                loader.classList.add('hidden');
+                mainContent.classList.add('loaded');
+            }, 1500);
+        };
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('active');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.1 });
+
+            document.querySelectorAll('.animate-on-scroll').forEach((element) => {
+                observer.observe(element);
+            });
+        });
     </script>
 </body>
 </html>
